@@ -10,36 +10,48 @@ let tasks = [];
 function renderTasks(filter = "all") {
   taskList.innerHTML = "";
 
-  const filteredTasks = tasks.filter(task =>
-    filter === "completed" ? task.completed :
-    filter === "pending" ? !task.completed :
-    true
-  );
+  tasks.forEach((task, index) => {
+    const shouldRender =
+      filter === "all" ||
+      (filter === "completed" && task.completed) ||
+      (filter === "pending" && !task.completed);
 
-  const taskItems = filteredTasks.map((task, index) => {
-    const li = document.createElement("li");
+    if (shouldRender) {
+      const li = document.createElement("li");
+      li.className = "task-item";
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = task.completed;
-    checkbox.addEventListener("change", () => toggleTaskCompletion(task.id));
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = task.completed;
+      checkbox.addEventListener("change", () => {
+        task.completed = checkbox.checked;
+        renderTasks(filter); // Mantiene el filtro actual
+      });
 
-    const span = document.createElement("span");
-    span.textContent = task.name;
+      const span = document.createElement("span");
+      span.textContent = task.text;
+      if (task.completed) span.classList.add("completed");
 
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Eliminar";
-    deleteBtn.addEventListener("click", () => deleteTask(task.id));
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "🗑️";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.addEventListener("click", () => {
+        tasks.splice(index, 1);
+        renderTasks(filter);
+      });
 
-    li.appendChild(checkbox);
-    li.appendChild(span);
-    li.appendChild(deleteBtn);
+      const taskLeft = document.createElement("div");
+      taskLeft.style.display = "flex";
+      taskLeft.style.alignItems = "center";
+      taskLeft.style.gap = "10px";
+      taskLeft.appendChild(checkbox);
+      taskLeft.appendChild(span);
 
-    return li;
+      li.appendChild(taskLeft);
+      li.appendChild(deleteBtn);
+      taskList.appendChild(li);
+    }
   });
-
-  // Agregamos al DOM usando forEach para seguir usando los 3 métodos
-  taskItems.forEach(item => taskList.appendChild(item));
 }
 
 addTaskBtn.addEventListener("click", () => {
