@@ -74,4 +74,7 @@ export function mostrarTareas(filtro = null) {
 // Hacer funciones accesibles desde el HTML
 window.agregarTarea = agregarTarea;
 window.mostrarTareas = mostrarTareas;
+document.getElementById("addTask").addEventListener("click", agregarTarea);
 
+// Esto es para que también funcionen los filtros si usas botones con onclick
+window.mostrarTareas = mostrarTareas;
