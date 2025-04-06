@@ -15,10 +15,13 @@
 </head>
 <body>
   <h1>Lista de Tareas</h1>
-  <input type="text" id="taskInput" placeholder="Nueva tarea">
-  <button id="addTaskBtn">Agregar</button>
 
-  <div>
+  <div class="input-group">
+    <input type="text" id="taskInput" placeholder="Nueva tarea" />
+    <button id="addTask">Agregar</button>
+  </div>
+
+  <div class="filter-buttons">
     <button id="showAll">Mostrar todas</button>
     <button id="showCompleted">Completadas</button>
     <button id="showPending">Pendientes</button>
@@ -28,4 +31,4 @@
 
   <script type="module" src="app.js"></script>
 </body>
-</html>
+
