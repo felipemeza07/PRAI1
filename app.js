@@ -1,61 +1,74 @@
-let tasks = [];
-
-const taskInput = document.getElementById('taskInput');
-const addTaskBtn = document.getElementById('addTask');
-const taskList = document.getElementById('taskList');
-const showAllBtn = document.getElementById('showAll');
-const showCompletedBtn = document.getElementById('showCompleted');
-const showPendingBtn = document.getElementById('showPending');
-
-addTaskBtn.addEventListener('click', () => {
-  const taskText = taskInput.value.trim();
-  if (taskText !== '') {
-    tasks.push({ text: taskText, completed: false });
-    taskInput.value = '';
-    renderTasks();
-  }
-});
-
-function renderTasks(filter = 'all') {
-  taskList.innerHTML = '';
-
-  let filteredTasks = tasks;
-  if (filter === 'completed') {
-    filteredTasks = tasks.filter(task => task.completed);
-  } else if (filter === 'pending') {
-    filteredTasks = tasks.filter(task => !task.completed);
+// Clase Task
+class Task {
+  constructor(id, name) {
+    this.id = id;
+    this.name = name;
+    this.completed = false;
   }
 
-  filteredTasks.forEach((task, index) => {
-    const li = document.createElement('li');
-    li.className = 'task-item';
+  toggleCompleted() {
+    this.completed = !this.completed;
+  }
+}
 
-    const taskSpan = document.createElement('span');
-    taskSpan.textContent = task.text;
-    taskSpan.className = task.completed ? 'completed' : '';
-    taskSpan.addEventListener('click', () => toggleTask(index));
+// Lista global de tareas
+let tareas = [];
+let idCounter = 0;
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '🗑️';
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.addEventListener('click', () => deleteTask(index));
+// Agregar tarea
+export function agregarTarea() {
+  const input = document.getElementById("taskInput");
+  const nombre = input.value.trim();
+  if (nombre !== "") {
+    const nuevaTarea = new Task(++idCounter, nombre);
+    tareas.push(nuevaTarea);
+    input.value = "";
+    mostrarTareas();
+  }
+}
 
-    li.appendChild(taskSpan);
-    li.appendChild(deleteBtn);
-    taskList.appendChild(li);
+// Eliminar tarea
+function eliminarTarea(id) {
+  tareas = tareas.filter((t) => t.id !== id);
+  mostrarTareas();
+}
+
+// Filtrar tareas
+export function mostrarTareas(filtro = null) {
+  const lista = document.getElementById("taskList");
+  lista.innerHTML = "";
+
+  let tareasAMostrar = tareas;
+  if (filtro === true || filtro === false) {
+    tareasAMostrar = tareas.filter((t) => t.completed === filtro);
+  }
+
+  tareasAMostrar.forEach((tarea) => {
+    const li = document.createElement("li");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = tarea.completed;
+    checkbox.addEventListener("change", () => {
+      tarea.toggleCompleted();
+      mostrarTareas(filtro);
+    });
+
+    const span = document.createElement("span");
+    span.textContent = tarea.name;
+    if (tarea.completed) {
+      span.classList.add("completed");
+    }
+
+    const eliminarBtn = document.createElement("button");
+    eliminarBtn.textContent = "Eliminar";
+    eliminarBtn.addEventListener("click", () => eliminarTarea(tarea.id));
+
+    li.appendChild(checkbox);
+    li.appendChild(span);
+    li.appendChild(eliminarBtn);
+
+    lista.appendChild(li);
   });
 }
 
-function toggleTask(index) {
-  tasks[index].completed = !tasks[index].completed;
-  renderTasks();
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
-}
-
-showAllBtn.addEventListener('click', () => renderTasks('all'));
-showCompletedBtn.addEventListener('click', () => renderTasks('completed'));
-showPendingBtn.addEventListener('click', () => renderTasks('pending'));
