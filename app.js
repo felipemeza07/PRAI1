@@ -1,80 +1,70 @@
-// Clase Task
-class Task {
-  constructor(id, name) {
-    this.id = id;
-    this.name = name;
-    this.completed = false;
-  }
+const taskInput = document.getElementById("taskInput");
+const addTaskBtn = document.getElementById("addTask");
+const taskList = document.getElementById("taskList");
+const showAllBtn = document.getElementById("showAll");
+const showCompletedBtn = document.getElementById("showCompleted");
+const showPendingBtn = document.getElementById("showPending");
 
-  toggleCompleted() {
-    this.completed = !this.completed;
-  }
-}
+let tasks = [];
 
-// Lista global de tareas
-let tareas = [];
-let idCounter = 0;
+function renderTasks(filter = "all") {
+  taskList.innerHTML = "";
 
-// Agregar tarea
-export function agregarTarea() {
-  const input = document.getElementById("taskInput");
-  const nombre = input.value.trim();
-  if (nombre !== "") {
-    const nuevaTarea = new Task(++idCounter, nombre);
-    tareas.push(nuevaTarea);
-    input.value = "";
-    mostrarTareas();
-  }
-}
+  tasks.forEach((task, index) => {
+    const shouldRender =
+      filter === "all" ||
+      (filter === "completed" && task.completed) ||
+      (filter === "pending" && !task.completed);
 
-// Eliminar tarea
-function eliminarTarea(id) {
-  tareas = tareas.filter((t) => t.id !== id);
-  mostrarTareas();
-}
+    if (shouldRender) {
+      const li = document.createElement("li");
+      li.className = "task-item";
 
-// Filtrar tareas
-export function mostrarTareas(filtro = null) {
-  const lista = document.getElementById("taskList");
-  lista.innerHTML = "";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = task.completed;
+      checkbox.addEventListener("change", () => {
+        task.completed = checkbox.checked;
+        renderTasks(filter); // Mantiene el filtro actual
+      });
 
-  let tareasAMostrar = tareas;
-  if (filtro === true || filtro === false) {
-    tareasAMostrar = tareas.filter((t) => t.completed === filtro);
-  }
+      const span = document.createElement("span");
+      span.textContent = task.text;
+      if (task.completed) span.classList.add("completed");
 
-  tareasAMostrar.forEach((tarea) => {
-    const li = document.createElement("li");
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "🗑️";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.addEventListener("click", () => {
+        tasks.splice(index, 1);
+        renderTasks(filter);
+      });
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = tarea.completed;
-    checkbox.addEventListener("change", () => {
-      tarea.toggleCompleted();
-      mostrarTareas(filtro);
-    });
+      const taskLeft = document.createElement("div");
+      taskLeft.style.display = "flex";
+      taskLeft.style.alignItems = "center";
+      taskLeft.style.gap = "10px";
+      taskLeft.appendChild(checkbox);
+      taskLeft.appendChild(span);
 
-    const span = document.createElement("span");
-    span.textContent = tarea.name;
-    if (tarea.completed) {
-      span.classList.add("completed");
+      li.appendChild(taskLeft);
+      li.appendChild(deleteBtn);
+      taskList.appendChild(li);
     }
-
-    const eliminarBtn = document.createElement("button");
-    eliminarBtn.textContent = "Eliminar";
-    eliminarBtn.addEventListener("click", () => eliminarTarea(tarea.id));
-
-    li.appendChild(checkbox);
-    li.appendChild(span);
-    li.appendChild(eliminarBtn);
-
-    lista.appendChild(li);
   });
 }
-// Hacer funciones accesibles desde el HTML
-window.agregarTarea = agregarTarea;
-window.mostrarTareas = mostrarTareas;
-document.getElementById("addTask").addEventListener("click", agregarTarea);
 
-// Esto es para que también funcionen los filtros si usas botones con onclick
-window.mostrarTareas = mostrarTareas;
+addTaskBtn.addEventListener("click", () => {
+  const text = taskInput.value.trim();
+  if (text !== "") {
+    tasks.push({ text, completed: false });
+    taskInput.value = "";
+    renderTasks(); // Muestra todo por defecto
+  }
+});
+
+showAllBtn.addEventListener("click", () => renderTasks("all"));
+showCompletedBtn.addEventListener("click", () => renderTasks("completed"));
+showPendingBtn.addEventListener("click", () => renderTasks("pending"));
+
+renderTasks();
