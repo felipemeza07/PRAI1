@@ -71,4 +71,7 @@ export function mostrarTareas(filtro = null) {
     lista.appendChild(li);
   });
 }
+// Hacer funciones accesibles desde el HTML
+window.agregarTarea = agregarTarea;
+window.mostrarTareas = mostrarTareas;
 
