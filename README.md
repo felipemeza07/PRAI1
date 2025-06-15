@@ -1,59 +1,68 @@
-# ListaTareasAngular
+# ✅ Proyecto: Lista de Tareas - Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
+Este proyecto consiste en una aplicación básica de lista de tareas desarrollada con **Angular 18**, como parte de los requerimientos del curso. La app permite al usuario agregar, completar, eliminar y filtrar tareas. Está desarrollada con componentes standalone y desplegada públicamente.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🔗 Enlace en línea (Vercel)
+
+👉 [https://prai-1.vercel.app](https://prai-1.vercel.app)
+
+---
+
+## 🎯 Requisitos del curso cubiertos
+
+### Funcionalidades
+
+- ✅ Agregar tareas a una lista
+- ✅ Marcar tareas como completadas
+- ✅ Filtrar tareas completadas o pendientes
+- ✅ Eliminar tareas
+
+### Funciones implementadas
+
+- `agregarTarea(taskName)`  
+- `eliminarTarea(taskId)`  
+- `filtrarTareas(completadas)`  
+- `mostrarTareas()` (se implementa con `filtrarTareas` y la actualización del estado Angular)
+
+### Angular: manejo del estado
+
+- Uso de `[(ngModel)]` para capturar texto de nuevas tareas
+- Renderizado dinámico con `*ngFor`
+- Checkbox para marcar tareas completadas
+- Botones para eliminar y filtrar tareas (todas, completadas, pendientes)
+
+### Métodos de Arrays utilizados
+
+- `.map()` → usado para transformar visualmente las tareas antes de mostrarlas
+- `.filter()` → para separar tareas por estado
+- `.forEach()` → utilizado para actualizar estados
+
+---
+
+## 🧠 Tecnologías utilizadas
+
+- **Angular 18**
+- **Vite + SSR**
+- **TypeScript**
+- **HTML + CSS**
+- **Node.js + Express + MongoDB** (para persistencia de tareas, si se conecta al backend)
+
+---
+
+## 💻 Cómo correr este proyecto localmente
+
+### Requisitos
+
+- Node.js v18 o superior
+- Angular CLI (`npm install -g @angular/cli`)
+
+### Pasos
 
 ```bash
+git clone https://github.com/felipemeza07/PRAI1.git
+cd PRAI1
+npm install
 ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+http://localhost:4200/
