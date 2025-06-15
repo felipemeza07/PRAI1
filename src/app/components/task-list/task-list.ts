@@ -60,7 +60,16 @@ export class TaskListComponent implements OnInit {
     } else if (this.filtro === 'pendientes') {
       this.filteredTasks = this.tasks.filter(t => !t.completed);
     } else {
-      this.filteredTasks = [...this.tasks];
+      this.filteredTasks = this.tasks
+  .filter(t => {
+    if (this.filtro === 'completadas') return t.completed;
+    if (this.filtro === 'pendientes') return !t.completed;
+    return true;
+  })
+  .map(t => ({
+    ...t,
+    label: `${t.completed ? '✔️' : '❌'} ${t.name}`
+  }));
     }
   }
 

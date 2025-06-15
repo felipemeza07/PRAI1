@@ -13,7 +13,7 @@
   <li *ngFor="let task of filteredTasks">
     <input type="checkbox" [checked]="task.completed" (change)="cambiarEstado(task)">
     <span [style.text-decoration]="task.completed ? 'line-through' : 'none'">
-      {{ task.name }}
+      {{ task.label }}
     </span>
     <button (click)="eliminarTarea(task._id!)">Eliminar</button>
   </li>
