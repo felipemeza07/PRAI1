@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "jest",
     "serve:ssr:lista-tareas-angular": "node dist/lista-tareas-angular/server/server.mjs"
   },
   "private": true,
@@ -22,7 +22,8 @@
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "^0.15.1"
+    "zone.js": "^0.15.1",
+    "mongoose": "^8.15.1"
   },
   "devDependencies": {
     "@angular/build": "^20.0.2",
@@ -37,6 +38,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "jest": "^30.0.2"
   }
 }

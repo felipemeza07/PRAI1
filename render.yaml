@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: todo-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node app.js
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://felipemeza:Almeriacasa81@fullstackuc.aruwb7r.mongodb.net/todolist
